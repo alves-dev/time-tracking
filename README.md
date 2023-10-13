@@ -1,7 +1,8 @@
 # time-tracking
 
 O objetivo deste projeto e a minha introdução ao framework [quarkus](https://quarkus.io/).
-Atualmente trabalho com Spring então vai ser interessante lidar com outra tecnologia concorrente de certa forma. 
+Atualmente trabalho com Spring então vai ser interessante lidar com outra tecnologia,
+de que certa forma é um concorrente e veio com a ideia de ser mais leve e rápido. 
 
 Pretendo utilizar o `quarkus-hibernate-orm-panache` com o banco postgresql, 
 o panache oferece uma forma bem diferente de lidar com a persistência e recuperação dos dados.
