@@ -1,37 +1,48 @@
 package br.com.igorma.service;
 
+import br.com.igorma.controller.request.ActivityRequest;
 import br.com.igorma.model.TimeTracking;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 
-import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @ApplicationScoped
 public class Service {
 
     @Transactional
-    public void save(){
+    public TimeTracking create(ActivityRequest activityRequest) {
+        TimeTracking.TimeTrackingBuilder timeBuilder = TimeTracking.builder()
+                .type(activityRequest.getType())
+                .activity(activityRequest.getActivity())
+                .subActivity(activityRequest.getSubActivity())
+                .description(activityRequest.getDescription());
 
-//        TimeTracking time = new TimeTracking("ESTUDANDO");
-//        time.setActivity("meter_pe");
-//        time.setSubActivity("quarkus");
-//        time.setDescription("Estudando Quarkus");
-//
-//        time.persist();
+        if (activityRequest.getStartTime() != null) timeBuilder.startTime(activityRequest.getStartTime());
+        if (activityRequest.getEndTime() != null) timeBuilder.endTime(activityRequest.getEndTime());
 
-        TimeTracking time = TimeTracking.builder()
-                .type("ESTUDANDO")
-                .activity("meter_pe")
-                .subActivity("quarkus")
-                .startTime(ZonedDateTime.now().minusHours(3))
-                .endTime(ZonedDateTime.now())
-                .description("Estudando Quarkus")
-                .build();
+        TimeTracking time = timeBuilder.build();
         time.persist();
+        return time;
     }
 
-    public List<TimeTracking> getAll() {
-        return TimeTracking.findAll().list();
+    @Transactional
+    public TimeTracking finish(UUID id) {
+        TimeTracking time = TimeTracking.findById(id);
+        time.finish();
+        time.persist();
+        return time;
+    }
+
+    public List<TimeTracking> findLast(int count) {
+        if (count > 0) count = count - 1;
+        return TimeTracking.find("ORDER BY startTime DESC")
+                .range(0, count)
+                .list();
+    }
+
+    public List<TimeTracking> findNotFinished() {
+        return TimeTracking.find("endTime is null").list();
     }
 }

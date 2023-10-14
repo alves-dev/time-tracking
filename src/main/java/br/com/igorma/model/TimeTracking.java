@@ -56,4 +56,9 @@ public class TimeTracking extends BaseEntity {
         if (value.length() > 20) throw new IllegalArgumentException("Size cannot be greater than 20");
         return value.toUpperCase();
     }
+
+    public void finish() {
+        if (endTime != null) throw new IllegalArgumentException("Time tracking is already finished");
+        endTime = ZonedDateTime.now();
+    }
 }

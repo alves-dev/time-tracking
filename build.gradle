@@ -20,6 +20,10 @@ dependencies {
     implementation 'io.quarkus:quarkus-arc'
     //implementation 'io.quarkus:quarkus-resteasy'
 
+    implementation("io.quarkus:quarkus-smallrye-openapi"){
+        because("For swagger ui")
+    }
+
     compileOnly 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
 
